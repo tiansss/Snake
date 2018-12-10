@@ -1,69 +1,183 @@
 /* GLOBAL CONSTANTS AND VARIABLES */
-
-var background = 
+var isTexture;
+var isTextureULoc;
+var foodPos = [17,10,0];
+var inputTriangles = 
 [
     //grass background
     {
-      "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.6,0.6,0.4], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": "grass.jpg"}, 
-      "vertices": [[0, 20, 0],[0.3, 0.4, 0.65],[0.6,0.4,0.65],[0.6,0.1,0.65]],
-      "normals": [[0, 0, -1],[0, 0, -1],[0, 0, -1],[0, 0, -1]],
-      "uvs": [[0,0], [0,1], [1,1], [1,0]],
+      "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.6,0.65,0.5], "specular": [0.1,0.1,0.1], "n":17, "alpha": 1.0, "texture": undefined}, 
+      "vertices": [[1, 19, 0],[19, 19, 0],[19,1,0],[1,1,0]],
+      "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1]],
+      "uvs": [[0,1], [1,1], [1,0],[0,0]],
       "triangles": [[0,1,2],[2,3,0]]
     },
 
     //left wall
     {
-        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.6,0.6,0.4], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": "grass.jpg"}, 
-        "vertices": [[0, 20, 0],[0.3, 0.4, 0.65],[0.6,0.4,0.65],[0.6,0.1,0.65]],
-        "normals": [[0, 0, -1],[0, 0, -1],[0, 0, -1],[0, 0, -1]],
-        "uvs": [[0,0], [0,1], [1,1], [1,0]],
-        "triangles": [[0,1,2],[2,3,0]]
+        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.7,0.4,0.4], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": undefined}, 
+        "vertices": [[0, 20, 1],[1, 20, 1],[1,0,1],[0,0,1],
+                     [1,20,1],[1,20,0],[1,0,0],[1,0,1],
+                     [0,20,0],[1,20,0],[1,0,0],[0,0,0],
+                     [0,20,1],[0,0,1],[0,0,0],[0,20,0],
+                     [0,20,1],[0,20,0],[1,20,0],[1,20,1],
+                     [0,0,1],[1,0,1],[1,0,0],[0,0,0]],
+        "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
+                    [1,0,0],[1,0,0],[1,0,0],[1,0,0],
+                    [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
+                    [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
+                    [0,1,0],[0,1,0],[0,1,0],[0,1,0],
+                    [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
+        "uvs": [[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0]],
+        "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
     },
 
     //upper wall
     {
-        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.6,0.6,0.4], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": "grass.jpg"}, 
-        "vertices": [[0, 20, 0],[0.3, 0.4, 0.65],[0.6,0.4,0.65],[0.6,0.1,0.65]],
-        "normals": [[0, 0, -1],[0, 0, -1],[0, 0, -1],[0, 0, -1]],
-        "uvs": [[0,0], [0,1], [1,1], [1,0]],
-        "triangles": [[0,1,2],[2,3,0]]
+        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.7,0.4,0.4], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": undefined}, 
+        "vertices": [[1,20,1],[19,20,1],[19,19,1],[1,19,1],
+                    [19,19,1],[19,20,1],[19,20,0],[19,19,0],
+                    [1,20,0],[19,20,0],[19,19,0],[1,19,0],
+                    [1,19,1],[1,19,0],[1,20,0],[1,20,1],
+                    [19,20,1],[19,20,0],[1,20,0],[1,20,1],
+                    [1,19,1],[19,19,1],[19,19,0],[1,19,0]],
+        "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
+                    [1,0,0],[1,0,0],[1,0,0],[1,0,0],
+                    [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
+                    [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
+                    [0,1,0],[0,1,0],[0,1,0],[0,1,0],
+                    [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
+        "uvs": [[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0]],
+        "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
     },
 
     //right wall
     {
-        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.6,0.6,0.4], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": "grass.jpg"}, 
-        "vertices": [[0, 20, 0],[0.3, 0.4, 0.65],[0.6,0.4,0.65],[0.6,0.1,0.65]],
-        "normals": [[0, 0, -1],[0, 0, -1],[0, 0, -1],[0, 0, -1]],
-        "uvs": [[0,0], [0,1], [1,1], [1,0]],
-        "triangles": [[0,1,2],[2,3,0]]
+        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.7,0.4,0.4], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": undefined}, 
+        "vertices": [[19,20,1],[20,20,1],[20,0,1],[19,0,1],
+                     [20,0,1],[20,20,1],[20,20,0],[20,0,0],
+                     [20,20,0],[19,20,0],[19,0,0],[20,0,0],
+                     [19,20,1],[19,0,1],[19,0,0],[19,20,0],
+                     [20,20,1],[19,20,1],[19,20,0],[20,20,0],
+                     [19,0,1],[20,0,1],[19,0,0],[20,0,0]],
+        "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
+                    [1,0,0],[1,0,0],[1,0,0],[1,0,0],
+                    [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
+                    [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
+                    [0,1,0],[0,1,0],[0,1,0],[0,1,0],
+                    [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
+        "uvs": [[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0]],
+        "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
     },
 
-    //down wall 
+    //down wall
     {
-        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.6,0.6,0.4], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": "grass.jpg"}, 
-        "vertices": [[0, 20, 0],[0.3, 0.4, 0.65],[0.6,0.4,0.65],[0.6,0.1,0.65]],
-        "normals": [[0, 0, -1],[0, 0, -1],[0, 0, -1],[0, 0, -1]],
-        "uvs": [[0,0], [0,1], [1,1], [1,0]],
-        "triangles": [[0,1,2],[2,3,0]]
-    }
+        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.7,0.4,0.4], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": undefined}, 
+        "vertices": [[1,1,1],[19,1,1],[19,0,1],[1,0,1],
+                    [19,0,1],[19,1,1],[19,1,0],[19,0,0],
+                    [1,0,0],[19,0,0],[19,1,0],[1,1,0],
+                    [1,1,1],[1,0,1],[1,0,0],[1,1,0],
+                    [1,1,1],[1,1,0],[19,1,0],[19,1,1],
+                    [1,0,1],[19,0,1],[19,0,0],[1,0,0]],
+        "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
+                    [1,0,0],[1,0,0],[1,0,0],[1,0,0],
+                    [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
+                    [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
+                    [0,1,0],[0,1,0],[0,1,0],[0,1,0],
+                    [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
+        "uvs": [[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0]],
+        "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
+    },
   ]
 
+dynamicTriangles = [
+        //snake1
+        {
+            "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0,1,0], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": undefined}, 
+            "vertices": [[0, 1, 1],[1, 1, 1],[1,0,1],[0,0,1],
+                         [1,1,1],[1,1,0],[1,0,0],[1,0,1],
+                         [0,1,0],[1,1,0],[1,0,0],[0,0,0],
+                         [0,1,1],[0,0,1],[0,0,0],[0,1,0],
+                         [0,1,1],[0,1,0],[1,1,0],[1,1,1],
+                         [0,0,1],[1,0,1],[1,0,0],[0,0,0]],
+            "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
+                        [1,0,0],[1,0,0],[1,0,0],[1,0,0],
+                        [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
+                        [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
+                        [0,1,0],[0,1,0],[0,1,0],[0,1,0],
+                        [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
+            "uvs": [[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0]],
+            "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
+        },
+    
+        //snake2
+        {
+            "material": {"ambient": [0.1,0.1,0.1], "diffuse": [1,0,0], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": undefined}, 
+            "vertices": [[0, 1, 1],[1, 1, 1],[1,0,1],[0,0,1],
+                         [1,1,1],[1,1,0],[1,0,0],[1,0,1],
+                         [0,1,0],[1,1,0],[1,0,0],[0,0,0],
+                         [0,1,1],[0,0,1],[0,0,0],[0,1,0],
+                         [0,1,1],[0,1,0],[1,1,0],[1,1,1],
+                         [0,0,1],[1,0,1],[1,0,0],[0,0,0]],
+            "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
+                        [1,0,0],[1,0,0],[1,0,0],[1,0,0],
+                        [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
+                        [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
+                        [0,1,0],[0,1,0],[0,1,0],[0,1,0],
+                        [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
+            "uvs": [[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0]],
+            "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
+        },
+    
+    
+    
+        //food
+        {
+            "material": {"ambient": [0.1,0.1,0.1], "diffuse": [1,1,0], "specular": [0.3,0.3,0.3], "n":17, "alpha": 1.0, "texture": undefined}, 
+            "vertices": [[0, 1, 1],[1, 1, 1],[1,0,1],[0,0,1],
+                         [1,1,1],[1,1,0],[1,0,0],[1,0,1],
+                         [0,1,0],[1,1,0],[1,0,0],[0,0,0],
+                         [0,1,1],[0,0,1],[0,0,0],[0,1,0],
+                         [0,1,1],[0,1,0],[1,1,0],[1,1,1],
+                         [0,0,1],[1,0,1],[1,0,0],[0,0,0]],
+            "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
+                        [1,0,0],[1,0,0],[1,0,0],[1,0,0],
+                        [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
+                        [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
+                        [0,1,0],[0,1,0],[0,1,0],[0,1,0],
+                        [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
+            "uvs": [[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0],[0,0], [0,1], [1,1], [1,0]],
+            "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
+        }
+];
 
+var snakes = [
+    //player control snake
+    {
+        "body": [[4,6,0],[4,5,0],[4,4,0]],
+        "direction": ["up","up"]
+    },
+
+    //computer snake
+    {
+        "body": [[6,8,0], [5,8,0], [4,8,0]],
+        "direction": ["right", "right"]
+    }
+];
 
 /* assignment specific globals */
 const INPUT_TRIANGLES_URL = "https://ncsucgclass.github.io/prog4/triangles.json"; // triangles file loc
-var defaultEye = vec3.fromValues(0.5,0.5,-0.5); // default eye position in world space
-var defaultCenter = vec3.fromValues(0.5,0.5,0.5); // default view direction in world space
+var defaultEye = vec3.fromValues(10,10,15); // default eye position in world space
+var defaultCenter = vec3.fromValues(10,10,-1); // default view direction in world space
 var defaultUp = vec3.fromValues(0,1,0); // default view up vector
 var lightAmbient = vec3.fromValues(1,1,1); // default light ambient emission
 var lightDiffuse = vec3.fromValues(1,1,1); // default light diffuse emission
 var lightSpecular = vec3.fromValues(1,1,1); // default light specular emission
-var lightPosition = vec3.fromValues(-1,3,-0.5); // default light position
+var lightPosition = vec3.fromValues(5,5,10); // default light position
 var rotateTheta = Math.PI/50; // how much to rotate models by with each key press
 var Modulate = true;
 /* webgl and geometry data */
 var gl = null; // the all powerful gl object. It's all here folks!
-var inputTriangles = []; // the triangle data as loaded from input files
 var numTriangleSets = 0; // how many triangle sets in input scene
 var inputEllipsoids = []; // the ellipsoid data as loaded from input files
 var numEllipsoids = 0; // how many ellipsoids in the input scene
@@ -74,6 +188,11 @@ var triSetSizes = []; // this contains the size of each triangle set
 var triangleBuffers = []; // lists of indices into vertexBuffers by set, in triples
 var viewDelta = 0; // how much to displace view with each key press
 var transparent = [];
+
+var dynamicVertexBuffers = []; // this contains vertex coordinate lists by set, in triples
+var dynamicNormalBuffers = []; // this contains normal component lists by set, in triples
+var dynamicUvBuffers = [];
+var dynamicTriangleBuffers = []; // lists of indices into vertexBuffers by set, in triples
 
 /* shader parameter locations */
 var vPosAttribLoc; // where to put position for vertex shader
@@ -94,32 +213,7 @@ var Up = vec3.clone(defaultUp); // view up vector in world space
 
 // ASSIGNMENT HELPER FUNCTIONS
 
-// get the JSON file from the passed URL
-function getJSONFile(url,descr) {
-    try {
-        if ((typeof(url) !== "string") || (typeof(descr) !== "string"))
-            throw "getJSONFile: parameter not a string";
-        else {
-            var httpReq = new XMLHttpRequest(); // a new http request
-            httpReq.open("GET",url,false); // init the request
-            httpReq.send(null); // send the request
-            var startTime = Date.now();
-            while ((httpReq.status !== 200) && (httpReq.readyState !== XMLHttpRequest.DONE)) {
-                if ((Date.now()-startTime) > 3000)
-                    break;
-            } // until its loaded or we time out after three seconds
-            if ((httpReq.status !== 200) || (httpReq.readyState !== XMLHttpRequest.DONE))
-                throw "Unable to open "+descr+" file!";
-            else
-                return JSON.parse(httpReq.response); 
-        } // end if good params
-    } // end try    
-    
-    catch(e) {
-        console.log(e);
-        return(String.null);
-    }
-} // end get input json file
+
 
 // does stuff when keys are pressed
 function handleKeyDown(event) {
@@ -163,199 +257,35 @@ function handleKeyDown(event) {
     handleKeyDown.modelOn = handleKeyDown.modelOn == undefined ? null : handleKeyDown.modelOn; // nothing selected initially
 
     switch (event.code) {
-        
-        // model selection
-        case "Space": 
-            if (handleKeyDown.modelOn != null)
-                handleKeyDown.modelOn.on = false; // turn off highlighted model
-            handleKeyDown.modelOn = null; // no highlighted model
-            handleKeyDown.whichOn = -1; // nothing highlighted
-            renderModels();
+        case "ArrowUp": 
+            if (snakes[0].direction[0] == "left" || snakes[0].direction[0] == "right" )
+                snakes[0].direction[1] = "up";
             break;
-        case "ArrowRight": // select next triangle set
-            highlightModel(modelEnum.TRIANGLES,(handleKeyDown.whichOn+1) % numTriangleSets);
-            renderModels();
+        case "ArrowDown":
+            if (snakes[0].direction[0] == "left" || snakes[0].direction[0] == "right" )
+                snakes[0].direction[1] = "down";
             break;
-        case "ArrowLeft": // select previous triangle set
-            highlightModel(modelEnum.TRIANGLES,(handleKeyDown.whichOn > 0) ? handleKeyDown.whichOn-1 : numTriangleSets-1);
-            renderModels();
+        case "ArrowRight": 
+            if (snakes[0].direction[0] == "up" || snakes[0].direction[0] == "down" )
+                snakes[0].direction[1] = "right";
             break;
-        
-            
-        // view change
-        case "KeyA": // translate view left, rotate left with shift
-            Center = vec3.add(Center,Center,vec3.scale(temp,viewRight,viewDelta));
-            if (!event.getModifierState("Shift"))
-                Eye = vec3.add(Eye,Eye,vec3.scale(temp,viewRight,viewDelta));
-            renderModels();
-            break;
-        case "KeyD": // translate view right, rotate right with shift
-            Center = vec3.add(Center,Center,vec3.scale(temp,viewRight,-viewDelta));
-            if (!event.getModifierState("Shift"))
-                Eye = vec3.add(Eye,Eye,vec3.scale(temp,viewRight,-viewDelta));
-            renderModels();
-            break;
-        case "KeyS": // translate view backward, rotate up with shift
-            if (event.getModifierState("Shift")) {
-                Center = vec3.add(Center,Center,vec3.scale(temp,Up,viewDelta));
-                Up = vec3.cross(Up,viewRight,vec3.subtract(lookAt,Center,Eye)); /* global side effect */
-            } else {
-                Eye = vec3.add(Eye,Eye,vec3.scale(temp,lookAt,-viewDelta));
-                Center = vec3.add(Center,Center,vec3.scale(temp,lookAt,-viewDelta));
-            } // end if shift not pressed
-            renderModels();
-            break;
-        case "KeyW": // translate view forward, rotate down with shift
-            if (event.getModifierState("Shift")) {
-                Center = vec3.add(Center,Center,vec3.scale(temp,Up,-viewDelta));
-                Up = vec3.cross(Up,viewRight,vec3.subtract(lookAt,Center,Eye)); /* global side effect */
-            } else {
-                Eye = vec3.add(Eye,Eye,vec3.scale(temp,lookAt,viewDelta));
-                Center = vec3.add(Center,Center,vec3.scale(temp,lookAt,viewDelta));
-            } // end if shift not pressed
-            renderModels();
-            break;
-        case "KeyQ": // translate view up, rotate counterclockwise with shift
-            if (event.getModifierState("Shift"))
-                Up = vec3.normalize(Up,vec3.add(Up,Up,vec3.scale(temp,viewRight,-viewDelta)));
-            else {
-                Eye = vec3.add(Eye,Eye,vec3.scale(temp,Up,viewDelta));
-                Center = vec3.add(Center,Center,vec3.scale(temp,Up,viewDelta));
-            } // end if shift not pressed
-            renderModels();
-            break;
-        case "KeyE": // translate view down, rotate clockwise with shift
-            if (event.getModifierState("Shift"))
-                Up = vec3.normalize(Up,vec3.add(Up,Up,vec3.scale(temp,viewRight,viewDelta)));
-            else {
-                Eye = vec3.add(Eye,Eye,vec3.scale(temp,Up,-viewDelta));
-                Center = vec3.add(Center,Center,vec3.scale(temp,Up,-viewDelta));
-            } // end if shift not pressed
-            renderModels();
-            break;
-        case "Escape": // reset view to default
-            Eye = vec3.copy(Eye,defaultEye);
-            Center = vec3.copy(Center,defaultCenter);
-            Up = vec3.copy(Up,defaultUp);
-            renderModels();
+        case "ArrowLeft": 
+            if (snakes[0].direction[0] == "up" || snakes[0].direction[0] == "down" )
+                snakes[0].direction[1] = "left";
             break;
             
-        // model transformation
-        case "KeyK": // translate left, rotate left with shift
-            if (event.getModifierState("Shift"))
-                rotateModel(Up,dirEnum.NEGATIVE);
-            else
-                translateModel(vec3.scale(temp,viewRight,viewDelta));
-            renderModels();
-            break;
-        case "Semicolon": // translate right, rotate right with shift
-            if (event.getModifierState("Shift"))
-                rotateModel(Up,dirEnum.POSITIVE);
-            else
-                translateModel(vec3.scale(temp,viewRight,-viewDelta));
-            renderModels();
-            break;
-        case "KeyL": // translate backward, rotate up with shift
-            if (event.getModifierState("Shift"))
-                rotateModel(viewRight,dirEnum.POSITIVE);
-            else
-                translateModel(vec3.scale(temp,lookAt,-viewDelta));
-            renderModels();    
-            break;
-        case "KeyO": // translate forward, rotate down with shift
-            if (event.getModifierState("Shift"))
-                rotateModel(viewRight,dirEnum.NEGATIVE);
-            else
-                translateModel(vec3.scale(temp,lookAt,viewDelta));
-            renderModels();
-            break;
-        case "KeyI": // translate up, rotate counterclockwise with shift 
-            if (event.getModifierState("Shift"))
-                rotateModel(lookAt,dirEnum.POSITIVE);
-            else
-                translateModel(vec3.scale(temp,Up,viewDelta));
-            renderModels();    
-            break;
-        case "KeyP": // translate down, rotate clockwise with shift
-            if (event.getModifierState("Shift"))
-                rotateModel(lookAt,dirEnum.NEGATIVE);
-            else
-                translateModel(vec3.scale(temp,Up,-viewDelta));
-            renderModels();    
-            break;
-        case "KeyB":
-             Modulate = !Modulate;
-            renderModels();
-        	break;
-        case "KeyN":
-        		handleKeyDown.modelOn.material.n = (handleKeyDown.modelOn.material.n + 1)%20;
-        		console.log(handleKeyDown.modelOn.material.n);
-                renderModels();
-                break;
-        case "Numpad1":
-        		vec3.add(handleKeyDown.modelOn.material.ambient, handleKeyDown.modelOn.material.ambient, vec3.fromValues(0.1,0.1,0.1));
-        		if(handleKeyDown.modelOn.material.ambient[0] > 1.0)
-        			handleKeyDown.modelOn.material.ambient[0] = 0;
-        		if(handleKeyDown.modelOn.material.ambient[1] > 1.0)
-        			handleKeyDown.modelOn.material.ambient[1] = 0;
-        		if(handleKeyDown.modelOn.material.ambient[2] > 1.0)
-        			handleKeyDown.modelOn.material.ambient[2] = 0;
-        		console.log(handleKeyDown.modelOn.material.ambient);
-            
-                renderModels();
-                break;
-        case "Numpad2":        		 
-        		vec3.add(handleKeyDown.modelOn.material.diffuse, handleKeyDown.modelOn.material.diffuse, vec3.fromValues(0.1,0.1,0.1));
-        		if(handleKeyDown.modelOn.material.diffuse[0] > 1.0)
-        			handleKeyDown.modelOn.material.diffuse[0] = 0;
-        		if(handleKeyDown.modelOn.material.diffuse[1] > 1.0)
-        			handleKeyDown.modelOn.material.diffuse[1] = 0;
-        		if(handleKeyDown.modelOn.material.diffuse[2] > 1.0)
-        			handleKeyDown.modelOn.material.diffuse[2] = 0;
-        		console.log(handleKeyDown.modelOn.material.diffuse);
-            
-                renderModels();
-                break;
-         case "Numpad3":        		 
-        		vec3.add(handleKeyDown.modelOn.material.specular, handleKeyDown.modelOn.material.specular, vec3.fromValues(0.1,0.1,0.1));
-        		if(handleKeyDown.modelOn.material.specular[0] > 1.0)
-        			handleKeyDown.modelOn.material.specular[0] = 0;
-        		if(handleKeyDown.modelOn.material.specular[1] > 1.0)
-        			handleKeyDown.modelOn.material.specular[1] = 0;
-        		if(handleKeyDown.modelOn.material.specular[2] > 1.0)
-        			handleKeyDown.modelOn.material.specular[2] = 0;
-        		console.log(handleKeyDown.modelOn.material.specular);
-            
-                renderModels();
-                break;
-        case "Backspace": // reset model transforms to default
-            for (var whichTriSet=0; whichTriSet<numTriangleSets; whichTriSet++) {
-                vec3.set(inputTriangles[whichTriSet].translation,0,0,0);
-                vec3.set(inputTriangles[whichTriSet].xAxis,1,0,0);
-                vec3.set(inputTriangles[whichTriSet].yAxis,0,1,0);
-            } // end for all triangle sets
-            for (var whichEllipsoid=0; whichEllipsoid<numEllipsoids; whichEllipsoid++) {
-                vec3.set(inputEllipsoids[whichEllipsoid].translation,0,0,0);
-                vec3.set(inputEllipsoids[whichTriSet].xAxis,1,0,0);
-                vec3.set(inputEllipsoids[whichTriSet].yAxis,0,1,0);
-            } // end for all ellipsoids
-            renderModels();
-            break;
     } // end switch
 } // end handleKeyDown
 
 // set up the webGL environment
 function setupWebGL() {
-    
-    // Set up keys
-    document.onkeydown = handleKeyDown; // call this when key pressed
 	 // Get the image canvas, render an image in it
      var imageCanvas = document.getElementById("myImageCanvas"); // create a 2d canvas
       var cw = imageCanvas.width, ch = imageCanvas.height; 
       imageContext = imageCanvas.getContext("2d"); 
       var bkgdImage = new Image(); 
       bkgdImage.crossOrigin = "Anonymous";
-      bkgdImage.src = "https://ncsucgclass.github.io/prog4/sky.jpg";
+      bkgdImage.src = "https://ncsucgclass.github.io/prog4/stars.jpg";
       bkgdImage.onload = function(){
           var iw = bkgdImage.width, ih = bkgdImage.height;
           imageContext.drawImage(bkgdImage,0,0,iw,ih,0,0,cw,ch);   
@@ -383,9 +313,6 @@ function setupWebGL() {
 
 // read models in, load them into webgl buffers
 function loadModels() {
-    
-    
-    inputTriangles = getJSONFile(INPUT_TRIANGLES_URL,"triangles"); // read in the triangle data
 
     try {
         if (inputTriangles == String.null)
@@ -403,7 +330,6 @@ function loadModels() {
             // process each triangle set to load webgl vertex and triangle buffers
             numTriangleSets = inputTriangles.length; // remember how many tri sets
             for (var whichSet=0; whichSet<numTriangleSets; whichSet++) { // for each tri set
-                
                 // set up hilighting, modeling translation and rotation
                 inputTriangles[whichSet].center = vec3.fromValues(0,0,0);  // center point of tri set
                 inputTriangles[whichSet].on = false; // not highlighted
@@ -420,11 +346,13 @@ function loadModels() {
                 for (whichSetVert=0; whichSetVert<numVerts; whichSetVert++) { // verts in set
                     vtxToAdd = inputTriangles[whichSet].vertices[whichSetVert]; // get vertex to add
                     normToAdd = inputTriangles[whichSet].normals[whichSetVert]; // get normal to add
-                    uvToAdd = inputTriangles[whichSet].uvs[whichSetVert];//get uv coordinates to add
+                    //if (inputTriangles[whichSet].texture != undefined)
+                        uvToAdd = inputTriangles[whichSet].uvs[whichSetVert];//get uv coordinates to add
                     inputTriangles[whichSet].glVertices.push(vtxToAdd[0],vtxToAdd[1],vtxToAdd[2]); // put coords in set coord list
                     inputTriangles[whichSet].glNormals.push(normToAdd[0],normToAdd[1],normToAdd[2]); // put normal in set coord list
                     //console.log(inputTriangles[whichSet]);
-                    inputTriangles[whichSet].glUVs.push(uvToAdd[0],uvToAdd[1]); // put uvs in set coord list
+                    //if (inputTriangles[whichSet].texture != undefined)
+                        inputTriangles[whichSet].glUVs.push(uvToAdd[0],uvToAdd[1]); // put uvs in set coord list
                     vec3.max(maxCorner,maxCorner,vtxToAdd); // update world bounding box corner maxima
                     vec3.min(minCorner,minCorner,vtxToAdd); // update world bounding box corner minima
                     vec3.add(inputTriangles[whichSet].center,inputTriangles[whichSet].center,vtxToAdd); // add to ctr sum
@@ -464,6 +392,93 @@ function loadModels() {
             } // end for each triangle set 
         	var temp = vec3.create();
         	viewDelta = vec3.length(vec3.subtract(temp,maxCorner,minCorner)) / 100; // set global
+        } // end if triangle file loaded
+    } // end try 
+    
+    catch(e) {
+        console.log(e);
+    } // end catch
+} // end load models
+
+function loadDnamicyModels() {
+
+    try {
+        if (dynamicTriangles == String.null)
+            throw "Unable to load triangles file!";
+        else {
+            var whichSetVert; // index of vertex in current triangle set
+            var whichSetTri; // index of triangle in current triangle set
+            var vtxToAdd; // vtx coords to add to the coord array
+            var uvToAdd;
+            var normToAdd; // vtx normal to add to the coord array
+            var triToAdd; // tri indices to add to the index array
+            var maxCorner = vec3.fromValues(Number.MIN_VALUE,Number.MIN_VALUE,Number.MIN_VALUE); // bbox corner
+            var minCorner = vec3.fromValues(Number.MAX_VALUE,Number.MAX_VALUE,Number.MAX_VALUE); // other corner
+        
+            // process each triangle set to load webgl vertex and triangle buffers
+            for (var whichSet=0; whichSet<dynamicTriangles.length; whichSet++) { // for each tri set
+                // set up hilighting, modeling translation and rotation
+                dynamicTriangles[whichSet].center = vec3.fromValues(0,0,0);  // center point of tri set
+                dynamicTriangles[whichSet].on = false; // not highlighted
+                dynamicTriangles[whichSet].translation = vec3.fromValues(0,0,0); // no translation
+                dynamicTriangles[whichSet].xAxis = vec3.fromValues(1,0,0); // model X axis
+                dynamicTriangles[whichSet].yAxis = vec3.fromValues(0,1,0); // model Y axis 
+
+                // set up the vertex and normal arrays, define model center and axes
+                dynamicTriangles[whichSet].glVertices = []; // flat coord list for webgl
+                dynamicTriangles[whichSet].glNormals = []; // flat normal list for webgl
+                dynamicTriangles[whichSet].glUVs = []; // flat uv list for webgl
+                dynamicTriangles[whichSet].imageReady = false; // whether its image is loaded or not
+                var numVerts = dynamicTriangles[whichSet].vertices.length; // num vertices in tri set
+                for (whichSetVert=0; whichSetVert<numVerts; whichSetVert++) { // verts in set
+                    vtxToAdd = dynamicTriangles[whichSet].vertices[whichSetVert]; // get vertex to add
+                    normToAdd = dynamicTriangles[whichSet].normals[whichSetVert]; // get normal to add
+                    //if (dynamicTriangles[whichSet].texture != undefined)
+                    uvToAdd = dynamicTriangles[whichSet].uvs[whichSetVert];//get uv coordinates to add
+                    dynamicTriangles[whichSet].glVertices.push(vtxToAdd[0],vtxToAdd[1],vtxToAdd[2]); // put coords in set coord list
+                    dynamicTriangles[whichSet].glNormals.push(normToAdd[0],normToAdd[1],normToAdd[2]); // put normal in set coord list
+                    //console.log(dynamicTriangles[whichSet]);
+                    //if (dynamicTriangles[whichSet].texture != undefined)
+                    dynamicTriangles[whichSet].glUVs.push(uvToAdd[0],uvToAdd[1]); // put uvs in set coord list
+                    vec3.max(maxCorner,maxCorner,vtxToAdd); // update world bounding box corner maxima
+                    vec3.min(minCorner,minCorner,vtxToAdd); // update world bounding box corner minima
+                    vec3.add(dynamicTriangles[whichSet].center,dynamicTriangles[whichSet].center,vtxToAdd); // add to ctr sum
+                } // end for vertices in set
+                vec3.scale(dynamicTriangles[whichSet].center,dynamicTriangles[whichSet].center,1/numVerts); // avg ctr sum
+
+                // send the vertex coords and normals to webGL
+                dynamicVertexBuffers[whichSet] = gl.createBuffer(); // init empty webgl set vertex coord buffer
+                gl.bindBuffer(gl.ARRAY_BUFFER,dynamicVertexBuffers[whichSet]); // activate that buffer
+                gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(dynamicTriangles[whichSet].glVertices),gl.STATIC_DRAW); // data in
+                dynamicNormalBuffers[whichSet] = gl.createBuffer(); // init empty webgl set normal component buffer
+                gl.bindBuffer(gl.ARRAY_BUFFER,dynamicNormalBuffers[whichSet]); // activate that buffer
+                gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(dynamicTriangles[whichSet].glNormals),gl.STATIC_DRAW); // data in
+                dynamicUvBuffers[whichSet] = gl.createBuffer(); // init empty webgl set uv buffer
+                gl.bindBuffer(gl.ARRAY_BUFFER,dynamicUvBuffers[whichSet]); // activate that buffer
+                gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(dynamicTriangles[whichSet].glUVs),gl.STATIC_DRAW); // data in
+
+                if(dynamicTriangles[whichSet].material.alpha != 1){
+                    transparent.push(dynamicTriangles[whichSet]);
+                }else{
+                    transparent.push(1);
+                }
+
+                // set up the triangle index array, adjusting indices across sets
+                dynamicTriangles[whichSet].glTriangles = []; // flat index list for webgl
+                // triSetSizes[whichSet] = dynamicTriangles[whichSet].triangles.length; // number of tris in this set
+                for (whichSetTri=0; whichSetTri<12; whichSetTri++) {
+                    triToAdd = dynamicTriangles[whichSet].triangles[whichSetTri]; // get tri to add
+                    dynamicTriangles[whichSet].glTriangles.push(triToAdd[0],triToAdd[1],triToAdd[2]); // put indices in set list
+                } // end for triangles in set
+
+                // send the triangle indices to webGL
+                dynamicTriangleBuffers.push(gl.createBuffer()); // init empty triangle index buffer
+                gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, dynamicTriangleBuffers[whichSet]); // activate that buffer
+                gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(dynamicTriangles[whichSet].glTriangles),gl.STATIC_DRAW); // data in
+
+            } // end for each triangle set 
+        	// var temp = vec3.create();
+        	// viewDelta = vec3.length(vec3.subtract(temp,maxCorner,minCorner)) / 100; // set global
         } // end if triangle file loaded
     } // end try 
     
@@ -524,6 +539,7 @@ function setupShaders() {
         uniform float uShininess; // the specular exponent
         uniform float uAlpha;//the transparency alpha
         uniform bool Modulate;  
+        uniform bool isTexture;
         // geometry properties
         varying vec3 vWorldPos; // world xyz of fragment
         varying vec3 vVertexNormal; // normal of fragment
@@ -563,8 +579,14 @@ function setupShaders() {
             
             // combine to output color
             vec3 colorOut = ambient + diffuse + specular; // no specular yet
-            //gl_FragColor = vec4(colorOut, 1.0); 
-            gl_FragColor = vec4(texture2D(u_texture, v_texcoord).rgb * colorOut, uAlpha * texture2D(u_texture, v_texcoord).a);
+            if (isTexture){
+                gl_FragColor = vec4(texture2D(u_texture, v_texcoord).rgb * colorOut, uAlpha * texture2D(u_texture, v_texcoord).a);
+            }
+            else {
+                gl_FragColor = vec4(colorOut, 1.0); 
+            }
+           
+            
         }
     `;
     
@@ -612,6 +634,7 @@ function setupShaders() {
                 var lightDiffuseULoc = gl.getUniformLocation(shaderProgram, "uLightDiffuse"); // ptr to light diffuse
                 var lightSpecularULoc = gl.getUniformLocation(shaderProgram, "uLightSpecular"); // ptr to light specular
                 var lightPositionULoc = gl.getUniformLocation(shaderProgram, "uLightPosition"); // ptr to light position
+                isTextureULoc = gl.getUniformLocation(shaderProgram, "isTexture");
                 ambientULoc = gl.getUniformLocation(shaderProgram, "uAmbient"); // ptr to ambient
                 diffuseULoc = gl.getUniformLocation(shaderProgram, "uDiffuse"); // ptr to diffuse
                 specularULoc = gl.getUniformLocation(shaderProgram, "uSpecular"); // ptr to specular
@@ -680,7 +703,7 @@ function renderModels() {
     
     // set up projection and view
     // mat4.fromScaling(hMatrix,vec3.fromValues(-1,1,1)); // create handedness matrix
-    mat4.perspective(pMatrix,0.5*Math.PI,1,0.1,10); // create projection matrix
+    mat4.perspective(pMatrix,0.5*Math.PI,1,1,20); // create projection matrix
     mat4.lookAt(vMatrix,Eye,Center,Up); // create view matrix
     mat4.multiply(pvMatrix,pvMatrix,pMatrix); // projection
     mat4.multiply(pvMatrix,pvMatrix,vMatrix); // projection * view
@@ -689,8 +712,12 @@ function renderModels() {
     var currSet; // the tri set and its material properties
     for (var whichTriSet=0; whichTriSet<numTriangleSets; whichTriSet++) {
         currSet = inputTriangles[whichTriSet];
-        if (currSet.material.alpha<1) continue;
         
+        if (currSet.material.texture != undefined) 
+            isTexture = true;
+        else isTexture = false;
+
+        gl.uniform1i(isTextureULoc, isTexture);
         // make model transform, add to view project
         makeModelTransform(currSet);
         mat4.multiply(pvmMatrix,pvMatrix,mMatrix); // project * view * model
@@ -714,92 +741,137 @@ function renderModels() {
         gl.vertexAttribPointer(tPosAttribLoc,2,gl.FLOAT,false,0,0); // feed
 
 
-        //create a texture
-        var texture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, texture);
+        if (isTexture){
+            console.log(whichTriSet);
+            //create a texture
+            var texture = gl.createTexture();
+            gl.bindTexture(gl.TEXTURE_2D, texture);
 
-        if(!currSet.imageReady) {
-            //Fill the texture with a 1*1 grey pixel
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([127,127,127,255]));
-        } else {
-            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, currSet.image);
-            gl.generateMipmap(gl.TEXTURE_2D);
+            if(!currSet.imageReady) {
+                //Fill the texture with a 1*1 grey pixel
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([127,127,127,255]));
+            } else {
+                gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+                gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, currSet.image);
+                gl.generateMipmap(gl.TEXTURE_2D);
+            }
         }
-
+        
+        
+       
         // triangle buffer: activate and render
         gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,triangleBuffers[whichTriSet]); // activate
         gl.drawElements(gl.TRIANGLES,3*triSetSizes[whichTriSet],gl.UNSIGNED_SHORT,0); // render
         
     } // end for each triangle set
-
-
-    //for part 4
-    var temp = []; 
-    for(var whichSet = 0; whichSet < transparent.length; whichSet++){
-        var cur = transparent[whichSet];
-        if(cur == 1) continue;
-        makeModelTransform(cur);
-        var centers = vec4.create();
-        mat4.multiply(centers,mMatrix,vec4.fromValues(cur.center[0],cur.center[1],cur.center[2],1.0));
-        temp.push({z_depth: centers[2]-Eye[2], whichSetID: whichSet});
-    }
-    sortID = temp;
-    sortID.sort(function(x,y){
-        return y.z_depth-x.z_depth;
-    })
-
-    for (var whichTriSet=0; whichTriSet<sortID.length; whichTriSet++) {
-        currSet = transparent[sortID[whichTriSet].whichSetID];
-
-        // make model transform, add to view project
-        makeModelTransform(currSet);
-        mat4.multiply(pvmMatrix,pvMatrix,mMatrix); // project * view * model
-        gl.uniformMatrix4fv(mMatrixULoc, false, mMatrix); // pass in the m matrix
-        gl.uniformMatrix4fv(pvmMatrixULoc, false, pvmMatrix); // pass in the hpvm matrix
-        
-        // reflectivity: feed to the fragment shader
-        gl.uniform3fv(ambientULoc,currSet.material.ambient); // pass in the ambient reflectivity
-        gl.uniform3fv(diffuseULoc,currSet.material.diffuse); // pass in the diffuse reflectivity
-        gl.uniform3fv(specularULoc,currSet.material.specular); // pass in the specular reflectivity
-        gl.uniform1f(shininessULoc,currSet.material.n); // pass in the specular exponent
-        gl.uniform1f(alphaULoc, currSet.material.alpha); //pass in the transparency alpha
-        gl.uniform1i(ModulateULoc, Modulate);
-
-        // vertex buffer: activate and feed into vertex shader
-        gl.bindBuffer(gl.ARRAY_BUFFER,vertexBuffers[sortID[whichTriSet].whichSetID]); // activate
-        gl.vertexAttribPointer(vPosAttribLoc,3,gl.FLOAT,false,0,0); // feed
-        gl.bindBuffer(gl.ARRAY_BUFFER,normalBuffers[sortID[whichTriSet].whichSetID]); // activate
-        gl.vertexAttribPointer(vNormAttribLoc,3,gl.FLOAT,false,0,0); // feed
-        gl.bindBuffer(gl.ARRAY_BUFFER,uvBuffers[sortID[whichTriSet].whichSetID]); // activate
-        gl.vertexAttribPointer(tPosAttribLoc,2,gl.FLOAT,false,0,0); // feed
-
-
-        //create a texture
-        var texture = gl.createTexture();
-        gl.bindTexture(gl.TEXTURE_2D, texture);
-
-        if(!currSet.imageReady) {
-            //Fill the texture with a 1*1 grey pixel
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, 1, 1, 0, gl.RGBA, gl.UNSIGNED_BYTE, new Uint8Array([127,127,127,255]));
-        } else {
-            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, currSet.image);
-            gl.generateMipmap(gl.TEXTURE_2D);
-        }
-
-        // triangle buffer: activate and render
-        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,triangleBuffers[sortID[whichTriSet].whichSetID]); // activate
-        gl.drawElements(gl.TRIANGLES,3*triSetSizes[sortID[whichTriSet].whichSetID],gl.UNSIGNED_SHORT,0); // render
-      
-     }   
-     //end for part 4
 } // end render model
 
+
+// render the dynamic model
+function renderDynamicModels() {
+    
+    // gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    // gl.enable(gl.BLEND);
+
+    // Food   
+    var pMatrix = mat4.create(); // projection matrix
+    var vMatrix = mat4.create(); // view matrix
+    var mMatrix = mat4.create(); // model matrix
+    var pvMatrix = mat4.create(); // hand * proj * view matrices
+    var pvmMatrix = mat4.create(); // hand * proj * view * model matrices
+    if (dynamicTriangles[2].material.texture != undefined) 
+        isTexture = true;
+    else isTexture = false;
+
+    gl.uniform1i(isTextureULoc, isTexture);
+    // make model transform, add to view project
+    mat4.fromTranslation(mMatrix, foodPos);
+    mat4.perspective(pMatrix,0.5*Math.PI,1,1,20); // create projection matrix
+    mat4.lookAt(vMatrix,Eye,Center,Up); // create view matrix
+    mat4.multiply(pvMatrix,pvMatrix,pMatrix); // projection
+    mat4.multiply(pvMatrix,pvMatrix,vMatrix); // projection * view
+    mat4.multiply(pvmMatrix,pvMatrix,mMatrix); // project * view * model
+    gl.uniformMatrix4fv(mMatrixULoc, false, mMatrix); // pass in the m matrix
+    gl.uniformMatrix4fv(pvmMatrixULoc, false, pvmMatrix); // pass in the hpvm matrix
+    
+    // reflectivity: feed to the fragment shader
+    gl.uniform3fv(ambientULoc,dynamicTriangles[2].material.ambient); // pass in the ambient reflectivity
+    gl.uniform3fv(diffuseULoc,dynamicTriangles[2].material.diffuse); // pass in the diffuse reflectivity
+    gl.uniform3fv(specularULoc,dynamicTriangles[2].material.specular); // pass in the specular reflectivity
+    gl.uniform1f(shininessULoc,dynamicTriangles[2].material.n); // pass in the specular exponent
+    gl.uniform1f(alphaULoc, dynamicTriangles[2].material.alpha); //pass in the transparency alpha
+    gl.uniform1i(ModulateULoc, Modulate);
+
+    // vertex buffer: activate and feed into vertex shader
+    gl.bindBuffer(gl.ARRAY_BUFFER,dynamicVertexBuffers[2]); // activate
+    gl.vertexAttribPointer(vPosAttribLoc,3,gl.FLOAT,false,0,0); // feed
+    gl.bindBuffer(gl.ARRAY_BUFFER,dynamicNormalBuffers[2]); // activate
+    gl.vertexAttribPointer(vNormAttribLoc,3,gl.FLOAT,false,0,0); // feed
+    gl.bindBuffer(gl.ARRAY_BUFFER,dynamicUvBuffers[2]); // activate
+    gl.vertexAttribPointer(tPosAttribLoc,2,gl.FLOAT,false,0,0); // feed
+
+    // triangle buffer: activate and render
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,dynamicTriangleBuffers[2]); // activate
+    gl.drawElements(gl.TRIANGLES,36,gl.UNSIGNED_SHORT,0); // render
+
+    // render each triangle set with alpha==1
+    var currSet; // the tri set and its material properties
+    for (var i = 0; i <2; i++){
+        for (var j = 0; j < snakes[i].body.length; j++) {
+            currSet = dynamicTriangles[i];
+
+            if (currSet.material.texture != undefined) 
+                isTexture = true;
+            else isTexture = false;
+    
+            var pMatrix = mat4.create(); // projection matrix
+            var vMatrix = mat4.create(); // view matrix
+            var mMatrix = mat4.create(); // model matrix
+            var pvMatrix = mat4.create(); // hand * proj * view matrices
+            var pvmMatrix = mat4.create(); // hand * proj * view * model matrices
+
+            gl.uniform1i(isTextureULoc, isTexture);
+            // make model transform, add to view project
+            mat4.fromTranslation(mMatrix, snakes[i].body[j]);
+            mat4.perspective(pMatrix,0.5*Math.PI,1,1,20); // create projection matrix
+            mat4.lookAt(vMatrix,Eye,Center,Up); // create view matrix
+            mat4.multiply(pvMatrix,pvMatrix,pMatrix); // projection
+            mat4.multiply(pvMatrix,pvMatrix,vMatrix); // projection * view
+            mat4.multiply(pvmMatrix,pvMatrix,mMatrix); // project * view * model
+            gl.uniformMatrix4fv(mMatrixULoc, false, mMatrix); // pass in the m matrix
+            gl.uniformMatrix4fv(pvmMatrixULoc, false, pvmMatrix); // pass in the hpvm matrix
+            
+            // reflectivity: feed to the fragment shader
+            gl.uniform3fv(ambientULoc,currSet.material.ambient); // pass in the ambient reflectivity
+            gl.uniform3fv(diffuseULoc,currSet.material.diffuse); // pass in the diffuse reflectivity
+            gl.uniform3fv(specularULoc,currSet.material.specular); // pass in the specular reflectivity
+            gl.uniform1f(shininessULoc,currSet.material.n); // pass in the specular exponent
+            gl.uniform1f(alphaULoc, currSet.material.alpha); //pass in the transparency alpha
+            gl.uniform1i(ModulateULoc, Modulate);
+    
+            // vertex buffer: activate and feed into vertex shader
+            gl.bindBuffer(gl.ARRAY_BUFFER,dynamicVertexBuffers[i]); // activate
+            gl.vertexAttribPointer(vPosAttribLoc,3,gl.FLOAT,false,0,0); // feed
+            gl.bindBuffer(gl.ARRAY_BUFFER,dynamicNormalBuffers[i]); // activate
+            gl.vertexAttribPointer(vNormAttribLoc,3,gl.FLOAT,false,0,0); // feed
+            gl.bindBuffer(gl.ARRAY_BUFFER,dynamicUvBuffers[i]); // activate
+            gl.vertexAttribPointer(tPosAttribLoc,2,gl.FLOAT,false,0,0); // feed
+                    
+            // triangle buffer: activate and render
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,dynamicTriangleBuffers[i]); // activate
+            gl.drawElements(gl.TRIANGLES,36,gl.UNSIGNED_SHORT,0); // render
+            
+        } // end for each triangle set
+    }
+    
+} // end render model
+
+
 function loadImage(i) {
+
     inputTriangles[i].image = new Image();
     inputTriangles[i].image.crossOrigin = "Anonymous";
-    inputTriangles[i].image.src = "https://ncsucgclass.github.io/prog4/"+inputTriangles[i].material.texture;
+    inputTriangles[i].image.src = "https://ncsucgclass.github.io/prog4/tree.png";
     
     inputTriangles[i].image.addEventListener('load', function(){
         inputTriangles[i].imageReady = true;
@@ -809,14 +881,131 @@ function loadImage(i) {
 
 /* MAIN -- HERE is where execution begins after window load */
 
-function main() {
+function resetSnake(i){
+    if (i == 0){
+        snakes[0] = {
+            "body": [[4,6,0],[4,5,0],[4,4,0]],
+            "direction": ["up","up"]
+        }
+    }
+    else {
+        snakes[1] = 
+            {
+                "body": [[6,8,0], [5,8,0], [4,8,0]],
+                "direction": ["right", "right"]
+            }
+    }
+}
+
+function resetFood(){
+    var x = Math.floor(Math.random()*18)+1;
+    var y = Math.floor(Math.random()*18)+1;
+    foodPos = [x,y,0];
+}
+
+function snakeMove(i){
+    body = snakes[i].body;
+    direction = snakes[i].direction;
+    len = body.length;
+
+    //update move
+    lastBody = body[len-1];
+    for (var l = len-1; l>0; l--){
+        body[l]=body[l-1];
+    }
+    switch (direction[0]) {
+        case "up": 
+            body[0] = [body[0][0], body[0][1]+1, 0];
+            break;
+        case "down":
+            body[0] = [body[0][0], body[0][1]-1, 0];
+            break;
+        case "left":
+            body[0] = [body[0][0]-1, body[0][1], 0];
+            break;
+        case "right":
+            body[0] = [body[0][0]+1, body[0][1], 0];
+            break;
+    }
+
+    //hit wall
+    if (body[0][0]<1 || body[0][0]>=19 || body[0][1]<1 || body[0][1]>=19) {
+        resetSnake(i);
+        console.log("hit wall");
+    }
+    
+    //hit self
+    for (var j = 1; j < len; j++){
+        if (body[0][0] == body[j][0] && body[0][1] == body[j][1]){
+            console.log("hit self");
+            resetSnake(i);
+            break;
+        }
+    }
   
+    //hit the other snake
+    body2 = snakes[1-i].body;
+    for (var j = 1; j < body2.length; j++){
+        if (body[0][0] == body2[j][0] && body[0][1] == body2[j][1]){
+            console.log("hit other");
+            resetSnake(i);
+            break;
+        }
+    }
+    
+    
+    //eat food
+    if (body[0][0] == foodPos[0] && body[0][1] == foodPos[1]){
+        body.push(lastBody);
+        resetFood();
+    }
+
+    //update direction
+    direction[0] = direction[1];
+
+}
+
+function snakeRandomChangeDirection(){
+    var move = Math.floor(Math.random()*4);
+    switch (move) {
+        case 1: 
+            if (snakes[1].direction[0] == "left" || snakes[1].direction[0] == "right" )
+                snakes[1].direction[1] = "up";
+            break;
+        case 2:
+            if (snakes[1].direction[0] == "left" || snakes[1].direction[0] == "right" )
+                snakes[1].direction[1] = "down";
+            break;
+        case 3: 
+            if (snakes[1].direction[0] == "up" || snakes[1].direction[0] == "down" )
+                snakes[1].direction[1] = "right";
+            break;
+        case 4: 
+            if (snakes[1].direction[0] == "up" || snakes[1].direction[0] == "down" )
+                snakes[1].direction[1] = "left";
+            break;
+    }
+}
+
+function main() {
+  document.onkeydown = handleKeyDown; // call this when key pressed
   setupWebGL(); // set up the webGL environment
   loadModels(); // load in the models from tri file
+  loadDnamicyModels();
   setupShaders(); // setup the webGL shaders
-  for(var i = 0; i < inputTriangles.length; i ++) {
-      loadImage(i);
-  }
+//   for(var i = 0; i < inputTriangles.length; i ++) {
+//       loadImage(i);
+//   }
   renderModels(); // draw the triangles using webGL
+  renderDynamicModels();
   
+  var loop = setInterval(
+      function(){
+          snakeMove(0);
+          snakeMove(1);
+          snakeRandomChangeDirection();
+          renderModels();
+          renderDynamicModels();
+      }, 150
+  );
 } // end main

@@ -399,6 +399,7 @@ function setupShaders() {
         uniform vec3 uDiffuse; // the diffuse reflectivity
         uniform vec3 uSpecular; // the specular reflectivity
         uniform float uShininess; // the specular exponent
+
         // geometry properties
         varying vec3 vWorldPos; // world xyz of fragment
         varying vec3 vVertexNormal; // normal of fragment
@@ -661,19 +662,26 @@ function renderDynamicModels() {
 /* MAIN -- HERE is where execution begins after window load */
 
 function resetSnake(i){
-    if (i == 0){
-        snakes[0] = {
-            "body": [[4,6,0],[4,5,0],[4,4,0]],
-            "direction": ["up","up"]
+    function isSnakePosOK(x,y){
+        //not on the other snake
+        for (var k = 0; k < snakes[1-i].body.length; k++){
+            if ((x == snakes[1-i].body[k][0] || x-1 == snakes[1-i].body[k][0] || x-2 ==  snakes[1-i].body[k][0]) && y == snakes[1-i].body[k][1])
+                return false;          
         }
+        //not on food
+        if ((x == foodPos[0] || x-1 == foodPos[0] || x-2 == foodPos[0]) && y == foodPos[1])
+            return false;
+        return true;
     }
-    else {
-        snakes[1] = 
-            {
-                "body": [[6,8,0], [5,8,0], [4,8,0]],
-                "direction": ["right", "right"]
-            }
-    }
+
+    var x = Math.floor(Math.random()*15)+3;
+    var y = Math.floor(Math.random()*18)+1;
+    while (!isSnakePosOK(x,y)){
+        x = Math.floor(Math.random()*15)+3;
+        y = Math.floor(Math.random()*18)+1;
+    }   
+    snakes[i].body = [[x,y,0],[x-1,y,0],[x-2,y,0]];
+    snakes[i].direction=["right", "right"];
 }
 
 function resetFood(){
@@ -681,21 +689,14 @@ function resetFood(){
     function isFoodPosOK(x,y){
         //not on snake0
         for (var i = 0; i < snakes[0].body.length; i++){
-            if (x == snakes[0].body[i][0] && y == snakes[0].body[i][1]){
+            if (x == snakes[0].body[i][0] && y == snakes[0].body[i][1])
                 return false;
-            }
         }
         //not on snake1
         for (var i = 0; i < snakes[1].body.length; i++){
-            if (x == snakes[1].body[i][0] && y == snakes[1].body[i][1]){
+            if (x == snakes[1].body[i][0] && y == snakes[1].body[i][1])
                 return false;
-            }
         }
-
-        //not on resetPos
-        if (x==4 && (y==6 || y==5 || y==4)) return false;
-        if ((x==6 || x==5 || x==4) && y==8) return false;
-
         return true;
     }
 

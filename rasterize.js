@@ -1,4 +1,8 @@
 /* GLOBAL CONSTANTS AND VARIABLES */
+
+
+var point = 0;
+var cpoint = 0;
 var inputTriangles = 
 [
     //grass background
@@ -207,8 +211,6 @@ function handleKeyDown(event) {
             break;           
     } // end switch
 } // end handleKeyDown
-
-
 
 // read models in, load them into webgl buffers
 function loadModels() {
@@ -575,6 +577,8 @@ function renderModels() {
         gl.drawElements(gl.TRIANGLES,3*triSetSizes[whichTriSet],gl.UNSIGNED_SHORT,0); // render
         
     } // end for each triangle set
+
+
 } // end render model
 
 
@@ -658,9 +662,6 @@ function renderDynamicModels() {
     
 } // end render model
 
-
-/* MAIN -- HERE is where execution begins after window load */
-
 function resetSnake(i){
     function isSnakePosOK(x,y){
         //not on the other snake
@@ -674,6 +675,14 @@ function resetSnake(i){
         return true;
     }
 
+    if (i==0) {
+        point = 0;
+        document.getElementById("point").innerHTML = point;
+    }
+    else {
+        cpoint = 0;
+        document.getElementById("cpoint").innerHTML = cpoint;
+    }
     var x = Math.floor(Math.random()*15)+3;
     var y = Math.floor(Math.random()*18)+1;
     while (!isSnakePosOK(x,y)){
@@ -762,6 +771,14 @@ function snakeMove(i){
     
     //eat food
     if (body[0][0] == foodPos[0] && body[0][1] == foodPos[1]){
+        if (i==0){
+            point=point+10;
+            document.getElementById("point").innerHTML = point;
+        }
+        if (i==1){
+            cpoint = cpoint+10;
+            document.getElementById("cpoint").innerHTML = cpoint;
+        }
         body.push(lastBody);
         resetFood();
     }
@@ -795,6 +812,8 @@ function snakeRandomChangeDirection(){
 
 function main() {
   document.onkeydown = handleKeyDown; 
+  document.getElementById("point").innerHTML = point;
+  document.getElementById("cpoint").innerHTML = cpoint;
   setupWebGL(); 
   loadModels(); 
   loadDnamicyModels();

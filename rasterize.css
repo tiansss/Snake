@@ -11,3 +11,17 @@
     top: 0px;
     z-index: 0;
 }
+
+.container {
+    position: relative;
+}
+#overlay {
+    position: absolute;
+    font-size:150%;
+    left: 230px;
+    top: 5px;
+    background-color: rgba(100, 109, 93, 0.438);
+    color: white;
+    font-family: monospace;
+    padding: 1em;
+}

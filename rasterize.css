@@ -12,6 +12,14 @@
     z-index: 0;
 }
 
+.ins{
+    position:absolute;
+    font-size:140%;
+    left:130px;
+    top:620px;
+    background-color: rgba(255, 255, 255, 0.61);
+    color:purple
+}
 .container {
     position: relative;
 }

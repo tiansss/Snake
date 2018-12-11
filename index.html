@@ -2,18 +2,38 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>TT Snake</title>
+    <title>TT 3D Snake</title>
     
     <link type="text/css" rel="stylesheet" href="rasterize.css">
 
     <script type="text/javascript" src="gl-matrix-min.js"></script>
     <script type="text/javascript" src="rasterize.js"></script>
     <script type="text/javascript" src="setupWebGL.js"></script>
+    <script type="text/javascript" src="inputTriangles.js"></script>
+    <script type="text/javascript" src="dynamicTriangles.js"></script>
   </head>
 
   <body onload="main();">
     <canvas id="myImageCanvas" width="700" height="700"></canvas>
     <canvas id="myWebGLCanvas" width="700" height="700"></canvas>
+    <div class="ins">
+      You are the purple snake. Using arrows to control.
+    </div>
+
+    <iframe src="2-seconds-of-silence.mp3" allow="autoplay" id="audio" style="display:none"></iframe>
+
+    <audio id="mySound" autoplay loop>
+      <source src="http://soundimage.org/wp-content/uploads/2015/03/Frantic-Gameplay.mp3" type="audio/mp3">
+    </audio>
+
+    <audio id="mySoundCollision" autoplay >
+      <source src="2-seconds-of-silence.mp3" type="audio/mp3">
+    </audio>
+
+    <audio id="mySoundFood" autoplay >
+      <source src="2-seconds-of-silence.mp3" type="audio/mp3">
+    </audio>
+
     <div class="container">
       <canvas id="canvas"></canvas>
       <div id="overlay">
@@ -21,5 +41,6 @@
         <div>Computer Score: <span id="cpoint"></span></div>
       </div>
     </div>
+    
   </body>
 </html>

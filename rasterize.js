@@ -1,149 +1,19 @@
-/* GLOBAL CONSTANTS AND VARIABLES */
+/*
+    TT 3D Snake
+    By Tian Shi
+*/
 
-
+// game setting variables
 var point = 0;
 var cpoint = 0;
-var inputTriangles = 
-[
-    //grass background
-    {
-      "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.6,0.65,0.5], "specular": [0.1,0.1,0.1], "n":17}, 
-      "vertices": [[1, 19, 0],[19, 19, 0],[19,1,0],[1,1,0]],
-      "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1]],
-      "triangles": [[0,1,2],[2,3,0]]
-    },
+var speed = 150;
 
-    //left wall
-    {
-        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.7,0.4,0.4], "specular": [0.3,0.3,0.3], "n":17}, 
-        "vertices": [[0, 20, 1],[1, 20, 1],[1,0,1],[0,0,1],
-                     [1,20,1],[1,20,0],[1,0,0],[1,0,1],
-                     [0,20,0],[1,20,0],[1,0,0],[0,0,0],
-                     [0,20,1],[0,0,1],[0,0,0],[0,20,0],
-                     [0,20,1],[0,20,0],[1,20,0],[1,20,1],
-                     [0,0,1],[1,0,1],[1,0,0],[0,0,0]],
-        "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
-                    [1,0,0],[1,0,0],[1,0,0],[1,0,0],
-                    [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
-                    [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
-                    [0,1,0],[0,1,0],[0,1,0],[0,1,0],
-                    [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
-        "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
-    },
+// static background
+var inputTriangles = [];
+//snake and food
+var dynamicTriangles = [];
 
-    //upper wall
-    {
-        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.7,0.4,0.4], "specular": [0.3,0.3,0.3], "n":17}, 
-        "vertices": [[1,20,1],[19,20,1],[19,19,1],[1,19,1],
-                    [19,19,1],[19,20,1],[19,20,0],[19,19,0],
-                    [1,20,0],[19,20,0],[19,19,0],[1,19,0],
-                    [1,19,1],[1,19,0],[1,20,0],[1,20,1],
-                    [19,20,1],[19,20,0],[1,20,0],[1,20,1],
-                    [1,19,1],[19,19,1],[19,19,0],[1,19,0]],
-        "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
-                    [1,0,0],[1,0,0],[1,0,0],[1,0,0],
-                    [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
-                    [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
-                    [0,1,0],[0,1,0],[0,1,0],[0,1,0],
-                    [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
-        "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
-    },
-
-    //right wall
-    {
-        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.7,0.4,0.4], "specular": [0.3,0.3,0.3], "n":17}, 
-        "vertices": [[19,20,1],[20,20,1],[20,0,1],[19,0,1],
-                     [20,0,1],[20,20,1],[20,20,0],[20,0,0],
-                     [20,20,0],[19,20,0],[19,0,0],[20,0,0],
-                     [19,20,1],[19,0,1],[19,0,0],[19,20,0],
-                     [20,20,1],[19,20,1],[19,20,0],[20,20,0],
-                     [19,0,1],[20,0,1],[19,0,0],[20,0,0]],
-        "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
-                    [1,0,0],[1,0,0],[1,0,0],[1,0,0],
-                    [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
-                    [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
-                    [0,1,0],[0,1,0],[0,1,0],[0,1,0],
-                    [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
-        "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
-    },
-
-    //down wall
-    {
-        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0.7,0.4,0.4], "specular": [0.3,0.3,0.3], "n":17}, 
-        "vertices": [[1,1,1],[19,1,1],[19,0,1],[1,0,1],
-                    [19,0,1],[19,1,1],[19,1,0],[19,0,0],
-                    [1,0,0],[19,0,0],[19,1,0],[1,1,0],
-                    [1,1,1],[1,0,1],[1,0,0],[1,1,0],
-                    [1,1,1],[1,1,0],[19,1,0],[19,1,1],
-                    [1,0,1],[19,0,1],[19,0,0],[1,0,0]],
-        "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
-                    [1,0,0],[1,0,0],[1,0,0],[1,0,0],
-                    [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
-                    [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
-                    [0,1,0],[0,1,0],[0,1,0],[0,1,0],
-                    [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
-        "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
-    },
-  ]
-
-dynamicTriangles = [
-    //snake1
-    {
-        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [0,1,0], "specular": [0.3,0.3,0.3], "n":17}, 
-        "vertices": [[0,1,1],[1,1,1],[1,0,1],[0,0,1],
-                    [1,1,1],[1,1,0],[1,0,0],[1,0,1],
-                    [0,1,0],[1,1,0],[1,0,0],[0,0,0],
-                    [0,1,1],[0,0,1],[0,0,0],[0,1,0],
-                    [0,1,1],[0,1,0],[1,1,0],[1,1,1],
-                    [0,0,1],[1,0,1],[1,0,0],[0,0,0]],
-        "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
-                    [1,0,0],[1,0,0],[1,0,0],[1,0,0],
-                    [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
-                    [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
-                    [0,1,0],[0,1,0],[0,1,0],[0,1,0],
-                    [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
-        "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
-    },
-
-    //snake2
-    {
-        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [1,0,0], "specular": [0.3,0.3,0.3], "n":17}, 
-        "vertices": [[0,1,1],[1,1,1],[1,0,1],[0,0,1],
-                    [1,1,1],[1,1,0],[1,0,0],[1,0,1],
-                    [0,1,0],[1,1,0],[1,0,0],[0,0,0],
-                    [0,1,1],[0,0,1],[0,0,0],[0,1,0],
-                    [0,1,1],[0,1,0],[1,1,0],[1,1,1],
-                    [0,0,1],[1,0,1],[1,0,0],[0,0,0]],
-        "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
-                    [1,0,0],[1,0,0],[1,0,0],[1,0,0],
-                    [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
-                    [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
-                    [0,1,0],[0,1,0],[0,1,0],[0,1,0],
-                    [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
-        "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
-    },
-
-    //food
-    {
-        "material": {"ambient": [0.1,0.1,0.1], "diffuse": [1,1,0], "specular": [0.3,0.3,0.3], "n":17}, 
-        "vertices": [[0, 1, 1],[1, 1, 1],[1,0,1],[0,0,1],
-                        [1,1,1],[1,1,0],[1,0,0],[1,0,1],
-                        [0,1,0],[1,1,0],[1,0,0],[0,0,0],
-                        [0,1,1],[0,0,1],[0,0,0],[0,1,0],
-                        [0,1,1],[0,1,0],[1,1,0],[1,1,1],
-                        [0,0,1],[1,0,1],[1,0,0],[0,0,0]],
-        "normals": [[0, 0, 1],[0, 0, 1],[0, 0, 1],[0, 0, 1],
-                    [1,0,0],[1,0,0],[1,0,0],[1,0,0],
-                    [0,0,-1],[0,0,-1],[0,0,-1],[0,0,-1],
-                    [-1,0,0],[-1,0,0],[-1,0,0],[-1,0,0],
-                    [0,1,0],[0,1,0],[0,1,0],[0,1,0],
-                    [0,-1,0],[0,-1,0],[0,-1,0],[0,-1,0]],
-        "triangles": [[0,1,2],[2,3,0],[4,5,6],[6,7,4],[8,9,10],[10,11,8],[12,13,14],[14,15,12],[16,17,18],[18,19,16],[20,21,22],[22,23,20]]
-    }
-];
-
-var foodPos = [17,10,0];
-
+//snakes movement information
 var snakes = [
     //player control snake
     {
@@ -158,16 +28,20 @@ var snakes = [
     }
 ];
 
-/* assignment specific globals */
-var Eye = vec3.fromValues(10,10,15); // default eye position in world space
-var Center = vec3.fromValues(10,10,-1); // default view direction in world space
-var Up = vec3.fromValues(0,1,0); // default view up vector
-var lightAmbient = vec3.fromValues(1,1,1); // default light ambient emission
-var lightDiffuse = vec3.fromValues(1,1,1); // default light diffuse emission
-var lightSpecular = vec3.fromValues(1,1,1); // default light specular emission
-var lightPosition = vec3.fromValues(5,5,10); // default light position
-var rotateTheta = Math.PI/50; // how much to rotate models by with each key press
-/* webgl and geometry data */
+//food default position
+var foodPos = [17,10,0];
+
+
+
+var Eye = vec3.fromValues(10,10,15); // eye position in world space
+var Center = vec3.fromValues(10,10,-1); // view direction in world space
+var Up = vec3.fromValues(0,1,0); // view up vector
+var lightAmbient = vec3.fromValues(1,1,1); // light ambient emission
+var lightDiffuse = vec3.fromValues(1,1,1); // light diffuse emission
+var lightSpecular = vec3.fromValues(1,1,1); // light specular emission
+var lightPosition = vec3.fromValues(5,5,10); // light position
+
+
 var gl = null; // the all powerful gl object. It's all here folks!
 var numTriangleSets = 0; // how many triangle sets in input scene
 var vertexBuffers = []; // this contains vertex coordinate lists by set, in triples
@@ -692,7 +566,11 @@ function resetSnake(i){
     snakes[i].body = [[x,y,0],[x-1,y,0],[x-2,y,0]];
     snakes[i].direction=["right", "right"];
 }
-
+function sleep(miliseconds) {
+    var currentTime = new Date().getTime();
+    while (currentTime + miliseconds >= new Date().getTime()) {
+    }
+ }
 function resetFood(){
     //to ensure the food position is not on surrent snake/resetPos
     function isFoodPosOK(x,y){
@@ -745,14 +623,18 @@ function snakeMove(i){
 
     //hit wall
     if (body[0][0]<1 || body[0][0]>=19 || body[0][1]<1 || body[0][1]>=19) {
+        if (i==0){
+            document.getElementById("mySoundCollision").src = "collision.mp3";
+        } 
         resetSnake(i);
-        console.log("hit wall");
     }
     
     //hit self
     for (var j = 1; j < len; j++){
         if (body[0][0] == body[j][0] && body[0][1] == body[j][1]){
-            console.log("hit self");
+            if (i==0){
+                document.getElementById("mySoundCollision").src = "collision.mp3";
+            } 
             resetSnake(i);
             break;
         }
@@ -762,7 +644,9 @@ function snakeMove(i){
     body2 = snakes[1-i].body;
     for (var j = 0; j < body2.length; j++){
         if (body[0][0] == body2[j][0] && body[0][1] == body2[j][1]){
-            console.log("hit other");
+            if (i==0){
+                document.getElementById("mySoundCollision").src = "collision.mp3";
+            } 
             resetSnake(i);
             break;
         }
@@ -774,6 +658,7 @@ function snakeMove(i){
         if (i==0){
             point=point+10;
             document.getElementById("point").innerHTML = point;
+            document.getElementById("mySoundFood").src = "http://soundimage.org/wp-content/uploads/2016/04/SynthChime1.mp3";
         }
         if (i==1){
             cpoint = cpoint+10;
@@ -810,24 +695,29 @@ function snakeRandomChangeDirection(){
     }
 }
 
+
 function main() {
-  document.onkeydown = handleKeyDown; 
-  document.getElementById("point").innerHTML = point;
-  document.getElementById("cpoint").innerHTML = cpoint;
-  setupWebGL(); 
-  loadModels(); 
-  loadDnamicyModels();
-  setupShaders(); 
-  renderModels(); 
-  renderDynamicModels();
-  
-  var loop = setInterval(
-      function(){
-          snakeMove(0);
-          snakeMove(1);
-          snakeRandomChangeDirection();
-          renderModels();
-          renderDynamicModels();
-      }, 150
-  );
+
+    inputTriangles = inputTriangles();
+    dynamicTriangles = dynamicTriangles();
+    document.onkeydown = handleKeyDown; 
+    document.getElementById("point").innerHTML = point;
+    document.getElementById("cpoint").innerHTML = cpoint;
+   
+    setupWebGL(); 
+    loadModels(); 
+    loadDnamicyModels();
+    setupShaders(); 
+    renderModels(); 
+    renderDynamicModels();
+
+    var loop = setInterval(
+        function(){
+            snakeMove(0);
+            snakeMove(1);
+            snakeRandomChangeDirection();
+            renderModels();
+            renderDynamicModels();
+        }, speed
+    );
 } // end main

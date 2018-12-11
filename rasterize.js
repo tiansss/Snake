@@ -27,10 +27,7 @@ var snakes = [
         "direction": ["right", "right"]
     }
 ];
-
-//food default position
-var foodPos = [17,10,0];
-
+var foodPos = [17,10,0];//food default position
 
 
 var Eye = vec3.fromValues(10,10,15); // eye position in world space
@@ -42,8 +39,7 @@ var lightSpecular = vec3.fromValues(1,1,1); // light specular emission
 var lightPosition = vec3.fromValues(5,5,10); // light position
 
 
-var gl = null; // the all powerful gl object. It's all here folks!
-var numTriangleSets = 0; // how many triangle sets in input scene
+var gl = null; 
 var vertexBuffers = []; // this contains vertex coordinate lists by set, in triples
 var normalBuffers = []; // this contains normal component lists by set, in triples
 var triSetSizes = []; // this contains the size of each triangle set
@@ -101,8 +97,7 @@ function loadModels() {
             var minCorner = vec3.fromValues(Number.MAX_VALUE,Number.MAX_VALUE,Number.MAX_VALUE); // other corner
         
             // process each triangle set to load webgl vertex and triangle buffers
-            numTriangleSets = inputTriangles.length; // remember how many tri sets
-            for (var whichSet=0; whichSet<numTriangleSets; whichSet++) { // for each tri set
+            for (var whichSet=0; whichSet<inputTriangles.length; whichSet++) { // for each tri set
                 // set up hilighting, modeling translation and rotation
                 inputTriangles[whichSet].center = vec3.fromValues(0,0,0);  // center point of tri set
                 inputTriangles[whichSet].on = false; // not highlighted
@@ -377,34 +372,6 @@ function setupShaders() {
 
 // render the loaded model
 function renderModels() {
-    // construct the model transform matrix, based on model state
-    function makeModelTransform(currModel) {
-        var zAxis = vec3.create(), sumRotation = mat4.create(), temp = mat4.create(), negCtr = vec3.create();
-
-        // move the model to the origin
-        mat4.fromTranslation(mMatrix,vec3.negate(negCtr,currModel.center)); 
-        
-        // scale for highlighting if needed
-        if (currModel.on)
-            mat4.multiply(mMatrix,mat4.fromScaling(temp,vec3.fromValues(1.2,1.2,1.2)),mMatrix); // S(1.2) * T(-ctr)
-        
-        // rotate the model to current interactive orientation
-        vec3.normalize(zAxis,vec3.cross(zAxis,currModel.xAxis,currModel.yAxis)); // get the new model z axis
-        mat4.set(sumRotation, // get the composite rotation
-            currModel.xAxis[0], currModel.yAxis[0], zAxis[0], 0,
-            currModel.xAxis[1], currModel.yAxis[1], zAxis[1], 0,
-            currModel.xAxis[2], currModel.yAxis[2], zAxis[2], 0,
-            0, 0,  0, 1);
-        mat4.multiply(mMatrix,sumRotation,mMatrix); // R(ax) * S(1.2) * T(-ctr)
-        
-        // translate back to model center
-        mat4.multiply(mMatrix,mat4.fromTranslation(temp,currModel.center),mMatrix); // T(ctr) * R(ax) * S(1.2) * T(-ctr)
-
-        // translate model to current interactive orientation
-        mat4.multiply(mMatrix,mat4.fromTranslation(temp,currModel.translation),mMatrix); // T(pos)*T(ctr)*R(ax)*S(1.2)*T(-ctr)
-        
-    } // end make model transform
-    
     // var hMatrix = mat4.create(); // handedness matrix
     var pMatrix = mat4.create(); // projection matrix
     var vMatrix = mat4.create(); // view matrix
@@ -424,11 +391,10 @@ function renderModels() {
     mat4.multiply(pvMatrix,pvMatrix,vMatrix); // projection * view
 
     var currSet; // the tri set and its material properties
-    for (var whichTriSet=0; whichTriSet<numTriangleSets; whichTriSet++) {
+    for (var whichTriSet=0; whichTriSet<inputTriangles.length; whichTriSet++) {
         currSet = inputTriangles[whichTriSet];
 
         // make model transform, add to view project
-        makeModelTransform(currSet);
         mat4.multiply(pvmMatrix,pvMatrix,mMatrix); // project * view * model
         gl.uniformMatrix4fv(mMatrixULoc, false, mMatrix); // pass in the m matrix
         gl.uniformMatrix4fv(pvmMatrixULoc, false, pvmMatrix); // pass in the hpvm matrix
@@ -536,67 +502,71 @@ function renderDynamicModels() {
     
 } // end render model
 
-function resetSnake(i){
-    function isSnakePosOK(x,y){
-        //not on the other snake
-        for (var k = 0; k < snakes[1-i].body.length; k++){
-            if ((x == snakes[1-i].body[k][0] || x-1 == snakes[1-i].body[k][0] || x-2 ==  snakes[1-i].body[k][0]) && y == snakes[1-i].body[k][1])
-                return false;          
-        }
-        //not on food
-        if ((x == foodPos[0] || x-1 == foodPos[0] || x-2 == foodPos[0]) && y == foodPos[1])
-            return false;
-        return true;
-    }
-
-    if (i==0) {
-        point = 0;
-        document.getElementById("point").innerHTML = point;
-    }
-    else {
-        cpoint = 0;
-        document.getElementById("cpoint").innerHTML = cpoint;
-    }
-    var x = Math.floor(Math.random()*15)+3;
-    var y = Math.floor(Math.random()*18)+1;
-    while (!isSnakePosOK(x,y)){
-        x = Math.floor(Math.random()*15)+3;
-        y = Math.floor(Math.random()*18)+1;
-    }   
-    snakes[i].body = [[x,y,0],[x-1,y,0],[x-2,y,0]];
-    snakes[i].direction=["right", "right"];
-}
-function sleep(miliseconds) {
-    var currentTime = new Date().getTime();
-    while (currentTime + miliseconds >= new Date().getTime()) {
-    }
- }
-function resetFood(){
-    //to ensure the food position is not on surrent snake/resetPos
-    function isFoodPosOK(x,y){
-        //not on snake0
-        for (var i = 0; i < snakes[0].body.length; i++){
-            if (x == snakes[0].body[i][0] && y == snakes[0].body[i][1])
-                return false;
-        }
-        //not on snake1
-        for (var i = 0; i < snakes[1].body.length; i++){
-            if (x == snakes[1].body[i][0] && y == snakes[1].body[i][1])
-                return false;
-        }
-        return true;
-    }
-
-    var x = Math.floor(Math.random()*18)+1;
-    var y = Math.floor(Math.random()*18)+1;
-    while (!isFoodPosOK(x,y)){
-        x = Math.floor(Math.random()*18)+1;
-        y = Math.floor(Math.random()*18)+1;
-    }   
-    foodPos = [x,y,0];
-}
 
 function snakeMove(i){
+    //reset snake at a random position with lenght=3, direction="right"
+    function resetSnake(i){
+        //ensure reset position is not on the other sname nor on food
+        function isSnakePosOK(x,y){
+            //not on the other snake
+            for (var k = 0; k < snakes[1-i].body.length; k++){
+                if ((x == snakes[1-i].body[k][0] || x-1 == snakes[1-i].body[k][0] || x-2 ==  snakes[1-i].body[k][0]) && y == snakes[1-i].body[k][1])
+                    return false;          
+            }
+            //not on food
+            if ((x == foodPos[0] || x-1 == foodPos[0] || x-2 == foodPos[0]) && y == foodPos[1])
+                return false;
+            return true;
+        }
+    
+        //update point
+        if (i==0) {
+            point = 0;
+            document.getElementById("point").innerHTML = point;
+        }
+        else {
+            cpoint = 0;
+            document.getElementById("cpoint").innerHTML = cpoint;
+        }
+
+        //update position
+        var x = Math.floor(Math.random()*15)+3;
+        var y = Math.floor(Math.random()*18)+1;
+        while (!isSnakePosOK(x,y)){
+            x = Math.floor(Math.random()*15)+3;
+            y = Math.floor(Math.random()*18)+1;
+        }   
+        snakes[i].body = [[x,y,0],[x-1,y,0],[x-2,y,0]];
+        snakes[i].direction=["right", "right"];
+    }
+
+    //reset food at a random position
+    function resetFood(){
+        //to ensure the food position is not on surrent snake/resetPos
+        function isFoodPosOK(x,y){
+            //not on snake0
+            for (var i = 0; i < snakes[0].body.length; i++){
+                if (x == snakes[0].body[i][0] && y == snakes[0].body[i][1])
+                    return false;
+            }
+            //not on snake1
+            for (var i = 0; i < snakes[1].body.length; i++){
+                if (x == snakes[1].body[i][0] && y == snakes[1].body[i][1])
+                    return false;
+            }
+            return true;
+        }
+    
+        //update position
+        var x = Math.floor(Math.random()*18)+1;
+        var y = Math.floor(Math.random()*18)+1;
+        while (!isFoodPosOK(x,y)){
+            x = Math.floor(Math.random()*18)+1;
+            y = Math.floor(Math.random()*18)+1;
+        }   
+        foodPos = [x,y,0];
+    }
+
     body = snakes[i].body;
     direction = snakes[i].direction;
     len = body.length;
@@ -621,7 +591,7 @@ function snakeMove(i){
             break;
     }
 
-    //hit wall
+    //is hit wall
     if (body[0][0]<1 || body[0][0]>=19 || body[0][1]<1 || body[0][1]>=19) {
         if (i==0){
             document.getElementById("mySoundCollision").src = "collision.mp3";
@@ -629,7 +599,7 @@ function snakeMove(i){
         resetSnake(i);
     }
     
-    //hit self
+    //is hit self
     for (var j = 1; j < len; j++){
         if (body[0][0] == body[j][0] && body[0][1] == body[j][1]){
             if (i==0){
@@ -640,7 +610,7 @@ function snakeMove(i){
         }
     }
   
-    //hit the other snake
+    //is hit the other snake
     body2 = snakes[1-i].body;
     for (var j = 0; j < body2.length; j++){
         if (body[0][0] == body2[j][0] && body[0][1] == body2[j][1]){
@@ -653,7 +623,7 @@ function snakeMove(i){
     }
     
     
-    //eat food
+    //is eat food
     if (body[0][0] == foodPos[0] && body[0][1] == foodPos[1]){
         if (i==0){
             point=point+10;
@@ -697,13 +667,18 @@ function snakeRandomChangeDirection(){
 
 
 function main() {
-
+    //read data
     inputTriangles = inputTriangles();
     dynamicTriangles = dynamicTriangles();
+
+    //key
     document.onkeydown = handleKeyDown; 
+    
+    //point
     document.getElementById("point").innerHTML = point;
     document.getElementById("cpoint").innerHTML = cpoint;
    
+    //load and render
     setupWebGL(); 
     loadModels(); 
     loadDnamicyModels();
@@ -711,11 +686,17 @@ function main() {
     renderModels(); 
     renderDynamicModels();
 
+    //loop in speed
     var loop = setInterval(
         function(){
+            //move one step for snake0 and snake1
             snakeMove(0);
             snakeMove(1);
+
+            //npc snake randomly change direction
             snakeRandomChangeDirection();
+
+            //render static and dynamic models
             renderModels();
             renderDynamicModels();
         }, speed
